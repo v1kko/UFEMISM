@@ -424,8 +424,8 @@ CONTAINS
     ! Local variables:
     TYPE(PetscErrorCode)                               :: perr
     INTEGER                                            :: m, n, i1, i2, j1, j2, k
-    REAL(dp), DIMENSION(:    ), POINTER                ::  xx_1D,  yy_1D
-    INTEGER                                            :: wxx_1D, wyy_1D
+    !REAL(dp), DIMENSION(:    ), POINTER                ::  xx_1D,  yy_1D
+    !INTEGER                                            :: wxx_1D, wyy_1D
     
     ! Safety
     CALL MatGetSize( A, m, n, perr)
@@ -436,8 +436,8 @@ CONTAINS
     END IF
     
     ! Allocate shared memory
-    CALL allocate_shared_dp_1D( n, xx_1D, wxx_1D)
-    CALL allocate_shared_dp_1D( m, yy_1D, wyy_1D)
+    !CALL allocate_shared_dp_1D( n, xx_1D, wxx_1D)
+    !CALL allocate_shared_dp_1D( m, yy_1D, wyy_1D)
     
     CALL partition_list( n, par%i, par%n, i1, i2)
     CALL partition_list( m, par%i, par%n, j1, j2)
@@ -446,21 +446,21 @@ CONTAINS
     DO k = 1, SIZE( xx,2)
       
       ! Copy this column of x
-      xx_1D( i1:i2) = xx( i1:i2,k)
-      CALL sync
+      !xx_1D( i1:i2) = xx( i1:i2,k)
+      !CALL sync
       
       ! Compute the matrix-vector product
-      CALL multiply_PETSc_matrix_with_vector_1D( A, xx_1D, yy_1D)
+      CALL multiply_PETSc_matrix_with_vector_1D( A, xx( i1:i2,k), yy(j1:j2,k))
       
       ! Copy the result back
-      yy( j1:j2,k) = yy_1D( j1:j2)
-      CALL sync
+      !yy( j1:j2,k) = yy_1D( j1:j2)
+      !CALL sync
       
     END DO
     
     ! Clean up after yourself
-    CALL deallocate_shared( wxx_1D)
-    CALL deallocate_shared( wyy_1D)
+    !CALL deallocate_shared( wxx_1D)
+    !CALL deallocate_shared( wyy_1D)
     
   END SUBROUTINE multiply_PETSc_matrix_with_vector_2D
   
