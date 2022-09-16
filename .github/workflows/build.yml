@@ -21,7 +21,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get upgrade
-          sudo apt-get install libopenmpi-dev gcovr libnetcdff-dev netcdf-bin \
+          sudo apt-get install libopenmpi-dev libnetcdff-dev netcdf-bin \
           libopenblas-dev makedepf90 petsc-dev
       - name: build minimism
         run: |
@@ -32,6 +32,7 @@ jobs:
           cd tests
           ./UFEMISM_unit_tests
       - name: collect coverage
+        run: |
           cd src
           gcov -o ../tests/obj/ *.f90
       - name: SonarCloud Scan
