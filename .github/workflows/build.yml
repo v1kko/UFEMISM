@@ -32,13 +32,3 @@ jobs:
         run: |
           cd tests
           ./UFEMISM_unit_tests
-      - name: collect coverage
-        run: |
-          cd tests
-          make coverage 
-
-          cov_pct=`make coverage | head -n 1 | cut -d' ' -f2 | sed 's/.$//'` 
-          if (( $cov_pct < 50 )); then
-            false; # not enough coverage
-          fi
-
