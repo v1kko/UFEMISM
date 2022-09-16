@@ -7,7 +7,6 @@ MODULE mesh_mapping_module
   USE mpi
   USE mpi_module,                      only: allgather_array
   USE petscksp
-  use petscmat
   USE configuration_module,            ONLY: dp, C, routine_path, init_routine, finalise_routine, crash, warning
   USE parameters_module
   USE petsc_module,                    ONLY: perr, MatDestroy

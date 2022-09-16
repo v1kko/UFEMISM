@@ -12,13 +12,15 @@ on:
 jobs:
   sonarcloud:
     name: Build, Unit Test, Sonarcloud
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Dependencies
         run: |
+          sudo apt-get update
+          sudo apt-get upgrade
           sudo apt-get install libopenmpi-dev gcovr libnetcdff-dev netcdf-bin \
           libopenblas-dev makedepf90 petsc-dev
       - name: unit_test
