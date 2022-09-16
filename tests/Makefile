@@ -30,7 +30,7 @@ UFEMISM.a:
 	cd ../src && $(MAKE) unit_tests_lib
 
 clean:
-	rm -fv */*.o */*.gcda */*.gcno */*.mod UFEMISM.a main.f90 UFEMISM_unit_tests coverage.xml
+	rm -fv */*.o */*.gcda */*.gcno */*.mod UFEMISM.a main.f90 UFEMISM_unit_tests coverage.xml html/* coverage.csv
 
 .PHONY: run_tests
 run: UFEMISM_unit_tests
