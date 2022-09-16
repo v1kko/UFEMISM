@@ -20,7 +20,7 @@ jobs:
       - name: Dependencies
         run: |
           sudo apt-get install libopenmpi-dev gcovr libnetcdff-dev netcdf-bin \
-          libopenblas-dev makedepf90
+          libopenblas-dev makedepf90 petsc-dev
       - name: unit_test
         run: |
           cd tests
