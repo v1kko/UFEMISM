@@ -1,4 +1,4 @@
-name: Build
+name: Build, unit test and sonarcloud
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 jobs:
   sonarcloud:
-    name: SonarCloud
+    name: Build, Unit Test, Sonarcloud
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Dependencies
         run: |
-          sudo apt-get install libopenmpi-dev gcovr
+          sudo apt-get install libopenmpi-dev gcovr libnetcdff-dev netcdf-bin liblapack-dev
       - name: unit_test
         run: |
           cd tests
