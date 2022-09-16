@@ -1,4 +1,4 @@
-name: Build, unit test and sonarcloud
+name: Build, unit test
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 jobs:
   sonarcloud:
-    name: Build, Unit Test, Sonarcloud
+    name: Build, Unit Test
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
