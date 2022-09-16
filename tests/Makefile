@@ -27,15 +27,17 @@ ${OBJ_PATH}/main.o: $(UNIT_TESTS_OBJ)
 # Always done, to make it up to date
 .PHONY: UFEMISM.a
 UFEMISM.a:
-	cd ../src && ${MAKE} ${MAKEFLAGS} unit_tests_lib
+	cd ../src && $(MAKE) unit_tests_lib
 
 clean:
 	rm -fv */*.o */*.gcda */*.gcno */*.mod UFEMISM.a main.f90 UFEMISM_unit_tests coverage.xml
 
 .PHONY: run_tests
-run_tests: UFEMISM_unit_tests
+run: UFEMISM_unit_tests
 	./UFEMISM_unit_tests
 
-coverage.xml: run_tests
-	gcovr -r ../src --object-directory obj --sonarqube -o $@
+coverage_html:
+	gcovr -r ../src --object-directory obj --html-details -o html/index.html
 
+coverage:
+	gcovr -r ../src --object-directory obj --csv=coverage.csv -s

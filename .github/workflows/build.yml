@@ -23,6 +23,7 @@ jobs:
           sudo apt-get upgrade
           sudo apt-get install libopenmpi-dev libnetcdff-dev netcdf-bin \
           libopenblas-dev makedepf90 petsc-dev
+          pip install gcovr --upgrade
       - name: build minimism
         run: |
           cd tests
@@ -33,10 +34,11 @@ jobs:
           ./UFEMISM_unit_tests
       - name: collect coverage
         run: |
-          cd src
-          gcov -o ../tests/obj/ *.f90
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          cd tests
+          make coverage 
+
+          cov_pct=`make coverage | head -n 1 | cut -d' ' -f2 | sed 's/.$//'` 
+          if (( $cov_pct < 50 )); then
+            false; # not enough coverage
+          fi
+
