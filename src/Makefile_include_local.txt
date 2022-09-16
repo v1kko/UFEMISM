@@ -31,4 +31,4 @@ $(OBJ_PATH)/%.o : %.f90 Makefile_include_local.txt
   LDFLAGS                 = -L/usr/local/lib ${NCLIB} \
                             -Wl,-rpath=${PETSC_DIR}/${PETSC_ARCH}/lib \
                             ${PETSC_DIR}/${PETSC_ARCH}/lib/libpetsc.so \
-                            -llapack -g
+                            -lopenblas -g

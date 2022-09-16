@@ -19,7 +19,8 @@ jobs:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Dependencies
         run: |
-          sudo apt-get install libopenmpi-dev gcovr libnetcdff-dev netcdf-bin liblapack-dev
+          sudo apt-get install libopenmpi-dev gcovr libnetcdff-dev netcdf-bin \
+          libopenblas-dev makedepf90
       - name: unit_test
         run: |
           cd tests
