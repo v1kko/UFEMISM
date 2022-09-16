@@ -26,12 +26,14 @@ jobs:
       - name: build minimism
         run: |
           cd tests
-          make UFEMISM.a
-
+          make UFEMISM_unit_tests
       - name: unit_test
         run: |
           cd tests
-          make coverage.xml
+          ./UFEMISM_unit_tests
+      - name: collect coverage
+          cd src
+          gcov -o ../tests/obj/ *.f90
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
