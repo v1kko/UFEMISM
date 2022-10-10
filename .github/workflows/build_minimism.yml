@@ -1,0 +1,32 @@
+name: Mininism Github Action
+
+on:
+  push:
+    branches: 
+      - master
+      - minimism
+      - develop
+  pull_request:
+    branches:
+      - master
+      - minimism
+      - develop
+    types:
+      - openend
+      - reopened
+      - synchronize
+      - ready_for_review
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Minimism
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: compile minimism
+        run: |
+          make
+
