@@ -1,0 +1,88 @@
+name: mininism Github Action
+env:
+  os: ubuntu-22.04
+
+on:
+  push:
+    branches: 
+      - master
+      - minimism
+      - develop
+  pull_request:
+    branches:
+      - master
+      - minimism
+      - develop
+  workflow_dispatch:
+
+jobs:
+  data:
+    name: Download data
+    # TODO: use https://github.com/MartijnHols/actions-cache to make cache usable between runs
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Download data
+        run: |
+          touch data.tgz
+          # wget .....
+          # cp .... data.tgz
+      - uses: actions/cache@v3
+        with:
+          path: data.tgz
+          key: ${{ github.sha }}-data
+
+  build:
+    name: Build minimism
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get upgrade
+          sudo apt-get install libopenmpi-dev libnetcdff-dev \
+                               netcdf-bin libopenblas-dev    \
+                               makedepf90 petsc-dev
+      
+      - name: compile minimism
+        run: |
+          cd src
+          make -j2
+
+      - uses: actions/cache@v3
+        with:
+          path: src/UFEMISM_program
+          key: ${{ github.sha }}-binary
+
+  test:
+    name: Test minimism
+    runs-on: ubuntu-22.04
+    needs:
+      - data
+      - build
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: src/UFEMISM_program
+          key: ${{ github.sha }}-binary
+
+      - uses: actions/cache@v3
+        with:
+          path: data.tgz
+          key: ${{ github.sha }}-data
+
+      - name: Extract data
+        run: |
+          # tar -xzf data.tgz
+          # ln -s data...   tests/data
+
+      - name: Run GRL (40km res, 0.3kyr)
+        run: |
+          cd tests
+          mpirun -n 2 ../src/UFEMISM_program GRL_40km_0.3kyr.cfg
